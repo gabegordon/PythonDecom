@@ -149,7 +149,7 @@ def callCXX (sel_apids, database, ins_string):
         wr = csv.writer(resultFile, dialect='excel')
         wr.writerow(sel_apids)
     for file in outfile:
-        Popen(['C:/JPSS/CXXDecom/bin/x64/Decom.exe', database, ins_string, file, 'C:/JPSS/CXXParams.csv'], creationflags=CREATE_NEW_CONSOLE)
+        Popen(['C:/JPSS/CXXDecom/x64/Release/Decom.exe', database, ins_string, file, 'C:/JPSS/CXXParams.csv'], creationflags=CREATE_NEW_CONSOLE)
     sys.exit()
 
 #Run h5 script
