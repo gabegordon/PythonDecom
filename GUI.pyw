@@ -10,6 +10,9 @@ from glob import glob
 import re
 import ttk
 
+######################
+#   h5 decode        #
+######################
 # Defines a function to sort strings in natural order. This allows the keys to be read in human/natural order.
 def sortkey_natural(text):
 	return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', text)]	
@@ -40,7 +43,7 @@ def oldScript():
         for RawAP in RawAPs:
             outputfilename = RawAP +"_"+ firstfiledate +"_"+ lastfiledate
             
-            outputfile[RawAP] = "C:/JPSS/"+basename(outputfilename)+".pkt"
+            outputfile[RawAP] = "output/"+basename(outputfilename)+".pkt"
             if RawAP in ofile:
                 pass
             else:
@@ -75,6 +78,7 @@ def oldScript():
     f.close()
     for RawAP in RawAPs:
         ofile[RawAP].close()
+######################END h5 DECODE###################################
 
 #Switch statement for instrument selection
 def switch(argument):
@@ -104,26 +108,46 @@ def relevantAPIDs(ins_string):
         return range(1200,1449)
     else:
         print("Error")
+
+def getDatabase(ins_string):
+    if ins_string == "SC":
+        return "databases/scdatabase.csv"
+    elif ins_string == "ATMS":
+        return "databases/atmsdatabase.csv"
+    elif ins_string == "OMPS":
+        return "databases/ompsdatabase.csv"
+    elif ins_string == "VIIRS":
+        return "databases/viirsdatabase.csv"
+    elif ins_string == "CERES":
+        return "databases/ceresdatabase.csv"
+    elif ins_string == "CRIS":
+        return "databases/crisdatabase.csv"
+    else:
+        print("Error")
      
 #Launch C++ to do the de-com     
 def callCXX (sel_apids, database, ins_string, allAPIDs):  
     global outfile
-    with open("C:\JPSS\CXXParams.csv",'wb') as resultFile:
+    with open("databases/CXXParams.csv",'wb') as resultFile:
         wr = csv.writer(resultFile, dialect='excel')
         wr.writerow(sel_apids)
     for file in outfile:
-        Popen(['C:/JPSS/CXXDecom/bin/x64/Decom.exe', database, ins_string, file, 'C:/JPSS/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
+        Popen(['C:/JPSS/CXXDecom/bin/x64/Decom.exe', database, ins_string, file, 'databases/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
     sys.exit()
 
 #Run h5 script
 #Create menu for selecting APIds
-def run (root, instrument): 
-    global database
+def run (root, instrument):
+    if not os.path.exists("databases"):
+        os.makedirs("databases")
+    if not os.path.exists("output"):
+        os.makedirs("output")
     oldScript()
     root.withdraw()
     ins_string = switch(instrument.get())
     apids = relevantAPIDs(ins_string)
-    
+    database = getDatabase(ins_string)
+
     apidwindow = Toplevel(root)  
     apidwindow.minsize(width=666, height=666)
     apidwindow.wm_title("APID Select")
@@ -147,15 +171,9 @@ def run2 (Lb1, apidwindow, root, database, ins_string, apidVar):
     root.destroy()
     callCXX(sel_apids,database, ins_string, allAPIDs)
     
-
-#Prompt user for filename
-def getfilename():
-    global database
-    database = str(fd.askopenfilename(initialdir='C:/JPSS/'))
-
 def getdirname():
     global input_dir
-    input_dir = str(fd.askdirectory(initialdir='C:/JPSS/'))
+    input_dir = str(fd.askdirectory(initialdir='C:/JPSS/data'))
 
 
 #########################
@@ -163,11 +181,10 @@ def getdirname():
 #Handles GUI Creation
 #########################
 database = ''
-input_dir = ''
+input_dir = 'data'
 root = Tk()
 root.title('De-Com Tool')
 app = Frame(root)
-Button(app, text = 'Select Database File', command = getfilename).pack(side=TOP, expand=YES)
 Button(app, text = 'Select h5 Folder', command = getdirname).pack(side=TOP, expand=YES)
 
 
