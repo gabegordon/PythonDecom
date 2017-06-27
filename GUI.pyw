@@ -1,4 +1,5 @@
 from Tkinter import *
+import tkFont
 from functools import partial
 import tkFileDialog as fd
 import csv
@@ -73,7 +74,6 @@ def oldScript():
                 apStorageOffset = int(apStorageOffset[3]) + (int(apStorageOffset[2])*(2**8)) + (int(apStorageOffset[1])*(2**16)) + (int(apStorageOffset[0])*(2**24))
                 inputFileValues=RawAP_0[apStorageOffset:len(RawAP_0)]
                 ofile[RawAP].write(inputFileValues)
-		
     # close the input file(s)
     f.close()
     for RawAP in RawAPs:
@@ -108,21 +108,46 @@ def relevantAPIDs(ins_string):
         return range(1200,1449)
     else:
         print("Error")
- 
-#Launch C++ to do the de-com     
-def callCXX (sel_apids, ins_string, allAPIDs):  
-    global outfile
-    with open("databases/CXXParams.csv",'wb') as resultFile:
+
+#Call C++ with selected files
+def launchCXX(Lb1, allAPIDs, packetSelect):
+    global root
+    packetSelect.withdraw()
+    sel_packetsI = Lb1.curselection()
+    all_packets = Lb1.get(0,END)
+    root.destroy()
+    sel_packets = []
+    for i in sel_packetsI:
+        sel_packets.append(all_packets[i])
+    for file in sel_packets:
+        instrument = file.split('-')[0].split('/')[1]
+        Popen(['C:/JPSS/CXXDecom/bin/x64/Decom.exe', instrument, file, 'databases/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
+    sys.exit()
+
+#Prepare to launch C++ to do the de-com     
+def callCXX (sel_apids, allAPIDs):  
+    global outfile, root
+    with open("databases/CXXParams.csv",'wb') as resultFile: #Write selected APIDs to file
         wr = csv.writer(resultFile, dialect='excel')
         wr.writerow(sel_apids)
-    for file in outfile:
-        Popen(['C:/JPSS/CXXDecom/bin/x64/Decom.exe', ins_string, file, 'databases/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
-    sys.exit()
+        
+    helv20 = tkFont.Font(family='Helvetica', size=20, weight='bold')
+    helv9 = tkFont.Font(family='Helvetica', size=9)
+
+    packetSelect = Toplevel(root)
+    packetSelect.minsize(width=666, height=666)
+    packetSelect.wm_title("Packet Select")
+    Label(packetSelect, text="Packet Select").pack() 
+    Lb1 = Listbox(packetSelect, selectmode='multiple', font=helv9) 
+    for i,packet in enumerate(outfile): #Create packet selector box
+        Lb1.insert(i,packet.split('/')[1])
+    Lb1.pack(side="left", fill="both", expand=True)
+    Button(packetSelect, text = "Execute", command = partial(launchCXX, Lb1, allAPIDs, packetSelect), fg = 'red', font=helv20).pack(fill=BOTH, expand=YES) 
 
 #Run h5 script
 #Create menu for selecting APIds
 def run (root, instrument):
-    if not os.path.exists("databases"):
+    if not os.path.exists("databases"): #Make output folders
         os.makedirs("databases")
     if not os.path.exists("output"):
         os.makedirs("output")
@@ -131,29 +156,38 @@ def run (root, instrument):
     ins_string = switch(instrument.get())
     apids = relevantAPIDs(ins_string)
     
+    helv24 = tkFont.Font(family='Helvetica', size=24, weight='bold')
+    helv14 = tkFont.Font(family='Helvetica', size=14)
     apidwindow = Toplevel(root)  
-    apidwindow.minsize(width=666, height=666)
+    apidwindow.minsize(width=300, height=666)
     apidwindow.wm_title("APID Select")
     Label(apidwindow, text="Desired APIDs").pack() 
+    apidframe=Frame(apidwindow)
+    apidframe.pack(side=LEFT, fill=Y)
+    scrollbar = Scrollbar(apidframe) 
+    scrollbar.pack(side=RIGHT, fill=Y)
+    Lb1 = Listbox(apidframe, yscrollcommand=scrollbar.set, selectmode='multiple', font=helv14) 
+    Lb1.pack()
+    scrollbar.config(command=Lb1.yview)
     
-    Lb1 = Listbox(apidwindow, selectmode='multiple') 
     for i,apid in enumerate(apids):
         Lb1.insert(i, apid)
+    
     Lb1.pack(side="left", fill="both", expand=True)
     apidVar = IntVar()
-    Checkbutton(apidwindow, text="All APIDs?", variable=apidVar).pack()
-    Button(apidwindow, text = "Execute", command = partial(run2, Lb1, apidwindow, root, ins_string, apidVar), fg = 'red').pack(fill="both", expand=True) 
+    Checkbutton(apidwindow, text="All APIDs?", variable=apidVar, font=helv24).pack(side=TOP, fill=BOTH, expand=YES)
+    Button(apidwindow, text = "Execute", command = partial(run2, Lb1, apidwindow, apidVar), fg = 'red', font=helv24).pack(fill=BOTH, expand=YES) 
 
  
 
 #Get user selected APIDs and get ready to call C++   
-def run2 (Lb1, apidwindow, root, ins_string, apidVar):
+def run2 (Lb1, apidwindow, apidVar):
+    apidwindow.withdraw()
     sel_apids = Lb1.curselection()
     allAPIDs = str(apidVar.get())
-    apidwindow.destroy()
-    root.destroy()
-    callCXX(sel_apids, ins_string, allAPIDs)
-    
+    callCXX(sel_apids, allAPIDs)
+
+#Prompt user for h5 folder location
 def getdirname():
     global input_dir
     input_dir = str(fd.askdirectory(initialdir='C:/JPSS/data'))
@@ -167,20 +201,24 @@ input_dir = 'data'
 root = Tk()
 root.title('De-Com Tool')
 app = Frame(root)
-Button(app, text = 'Select h5 Folder', command = getdirname).pack(side=TOP, expand=YES)
+root.minsize(width=300, height=666)
+helv24 = tkFont.Font(family='Helvetica', size=24, weight='bold')
+helv18 = tkFont.Font(family='Helvetica', size=18, weight='bold')
+helv16 = tkFont.Font(family='Helvetica', size=16, weight='bold')
 
+Button(app, text = 'Select h5 Folder', command = getdirname, font=helv24).pack(side=TOP, expand=YES, fill=BOTH)
 
 instrument = IntVar()
-Label(app, text="Instrument:").pack(side=TOP, expand=YES)
-Radiobutton(app, text="ATMS", variable=instrument, value = 0).pack(side=TOP, expand=YES)
-Radiobutton(app, text="OMPS", variable=instrument, value = 1).pack(side=TOP, expand=YES)
-Radiobutton(app, text="VIIRS", variable=instrument, value = 2).pack(side=TOP, expand=YES)
-Radiobutton(app, text="CERES", variable=instrument, value = 3).pack(side=TOP, expand=YES)
-Radiobutton(app, text="CRIS", variable=instrument, value = 4).pack(side=TOP, expand=YES)
-Radiobutton(app, text="SC", variable=instrument, value = 5).pack(side=TOP, expand=YES)
+Label(app, text="Instrument:", font=helv18).pack(side=TOP, expand=YES)
+Radiobutton(app, text="ATMS", variable=instrument, value = 0, font=helv16).pack(side=TOP, expand=YES)
+Radiobutton(app, text="OMPS", variable=instrument, value = 1, font=helv16).pack(side=TOP, expand=YES)
+Radiobutton(app, text="VIIRS", variable=instrument, value = 2, font=helv16).pack(side=TOP, expand=YES)
+Radiobutton(app, text="CERES", variable=instrument, value = 3, font=helv16).pack(side=TOP, expand=YES)
+Radiobutton(app, text="CRIS", variable=instrument, value = 4, font=helv16).pack(side=TOP, expand=YES)
+Radiobutton(app, text="SC", variable=instrument, value = 5, font=helv16).pack(side=TOP, expand=YES)
 
 
-Button(app, text = "Execute", command = partial(run, root, instrument), fg = 'red').pack(side=TOP, expand=YES)
+Button(app, text = "Execute", command = partial(run, root, instrument), fg = 'red', font=helv24).pack(side=TOP, expand=YES, fill=BOTH)
 app.pack(fill=BOTH, expand=YES)
 root.mainloop()
 
