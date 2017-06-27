@@ -108,31 +108,15 @@ def relevantAPIDs(ins_string):
         return range(1200,1449)
     else:
         print("Error")
-
-def getDatabase(ins_string):
-    if ins_string == "SC":
-        return "databases/scdatabase.csv"
-    elif ins_string == "ATMS":
-        return "databases/atmsdatabase.csv"
-    elif ins_string == "OMPS":
-        return "databases/ompsdatabase.csv"
-    elif ins_string == "VIIRS":
-        return "databases/viirsdatabase.csv"
-    elif ins_string == "CERES":
-        return "databases/ceresdatabase.csv"
-    elif ins_string == "CRIS":
-        return "databases/crisdatabase.csv"
-    else:
-        print("Error")
-     
+ 
 #Launch C++ to do the de-com     
-def callCXX (sel_apids, database, ins_string, allAPIDs):  
+def callCXX (sel_apids, ins_string, allAPIDs):  
     global outfile
     with open("databases/CXXParams.csv",'wb') as resultFile:
         wr = csv.writer(resultFile, dialect='excel')
         wr.writerow(sel_apids)
     for file in outfile:
-        Popen(['C:/JPSS/CXXDecom/bin/x64/Decom.exe', database, ins_string, file, 'databases/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
+        Popen(['C:/JPSS/CXXDecom/bin/x64/Decom.exe', ins_string, file, 'databases/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
     sys.exit()
 
 #Run h5 script
@@ -146,8 +130,7 @@ def run (root, instrument):
     root.withdraw()
     ins_string = switch(instrument.get())
     apids = relevantAPIDs(ins_string)
-    database = getDatabase(ins_string)
-
+    
     apidwindow = Toplevel(root)  
     apidwindow.minsize(width=666, height=666)
     apidwindow.wm_title("APID Select")
@@ -159,17 +142,17 @@ def run (root, instrument):
     Lb1.pack(side="left", fill="both", expand=True)
     apidVar = IntVar()
     Checkbutton(apidwindow, text="All APIDs?", variable=apidVar).pack()
-    Button(apidwindow, text = "Execute", command = partial(run2, Lb1, apidwindow, root, database, ins_string, apidVar), fg = 'red').pack(fill="both", expand=True) 
+    Button(apidwindow, text = "Execute", command = partial(run2, Lb1, apidwindow, root, ins_string, apidVar), fg = 'red').pack(fill="both", expand=True) 
 
  
 
 #Get user selected APIDs and get ready to call C++   
-def run2 (Lb1, apidwindow, root, database, ins_string, apidVar):
+def run2 (Lb1, apidwindow, root, ins_string, apidVar):
     sel_apids = Lb1.curselection()
     allAPIDs = str(apidVar.get())
     apidwindow.destroy()
     root.destroy()
-    callCXX(sel_apids,database, ins_string, allAPIDs)
+    callCXX(sel_apids, ins_string, allAPIDs)
     
 def getdirname():
     global input_dir
@@ -180,7 +163,6 @@ def getdirname():
 #Main Section
 #Handles GUI Creation
 #########################
-database = ''
 input_dir = 'data'
 root = Tk()
 root.title('De-Com Tool')
