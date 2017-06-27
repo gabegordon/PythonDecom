@@ -32,7 +32,7 @@ def oldScript():
     last_file = files_list_sorted[-1]
     firstfiledate = os.path.basename(first_file)[10:-50:1]
     lastfiledate = os.path.basename(last_file)[10:-50:1]
-	
+
     # create output file for raw packets
     # comment next line out to NOT create output file!
     # edit here for different directory
@@ -120,8 +120,8 @@ def launchCXX(Lb1, allAPIDs, packetSelect):
     for i in sel_packetsI:
         sel_packets.append(all_packets[i])
     for file in sel_packets:
-        instrument = file.split('-')[0].split('/')[1]
-        Popen(['C:/JPSS/CXXDecom/bin/x64/Decom.exe', instrument, file, 'databases/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
+        instrument = file.split('-')[0]
+        Popen(['C:/JPSS/CXXDecom/bin/x64/Decom.exe', instrument, "output/"+file, 'databases/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
     sys.exit()
 
 #Prepare to launch C++ to do the de-com     
