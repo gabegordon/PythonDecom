@@ -21,7 +21,7 @@ def sortkey_natural(text):
 
 #h5 developed previously	
 def oldScript():
-    global root, outfile
+    global app, outfile
     outfile = []
     files_list = glob(os.path.join(input_dir, '*.h5'))
     files_list_sorted = sorted(files_list)
@@ -52,7 +52,7 @@ def oldScript():
                 outfile.append(outputfile[RawAP])
     
     fullSize = len(files_list)
-    mpb = ttk.Progressbar(root,orient ="horizontal",length = 200, mode ="determinate")
+    mpb = ttk.Progressbar(app,orient ="horizontal",length = 400, mode ="determinate")
     mpb.pack(side=TOP, expand=YES)
     mpb["maximum"] = fullSize
     
@@ -132,17 +132,17 @@ def callCXX (sel_apids, allAPIDs):
         wr.writerow(sel_apids)
         
     helv20 = tkFont.Font(family='Helvetica', size=20, weight='bold')
-    helv9 = tkFont.Font(family='Helvetica', size=9)
+    helv14 = tkFont.Font(family='Helvetica', size=14)
 
     packetSelect = Toplevel(root)
-    packetSelect.minsize(width=666, height=666)
+    packetSelect.state('zoomed')
     packetSelect.wm_title("Packet Select")
-    Label(packetSelect, text="Packet Select").pack() 
-    Lb1 = Listbox(packetSelect, selectmode='multiple', font=helv9) 
+    Label(packetSelect, text="Packet Select", font=helv14).pack() 
+    Lb1 = Listbox(packetSelect, selectmode='multiple', font=helv14) 
     for i,packet in enumerate(outfile): #Create packet selector box
         Lb1.insert(i,packet.split('/')[1])
-    Lb1.pack(side="left", fill="both", expand=True)
-    Button(packetSelect, text = "Execute", command = partial(launchCXX, Lb1, allAPIDs, packetSelect), fg = 'red', font=helv20).pack(fill=BOTH, expand=YES) 
+    Button(packetSelect, text = "Execute", command = partial(launchCXX, Lb1, allAPIDs, packetSelect), fg = 'red', font=helv20).pack(side="top", fill=X, expand=NO) 
+    Lb1.pack(side="bottom", fill="both", expand=True)
 
 #Run h5 script
 #Create menu for selecting APIds
@@ -159,24 +159,23 @@ def run (root, instrument):
     helv24 = tkFont.Font(family='Helvetica', size=24, weight='bold')
     helv14 = tkFont.Font(family='Helvetica', size=14)
     apidwindow = Toplevel(root)  
-    apidwindow.minsize(width=300, height=666)
+    apidwindow.state('zoomed')
     apidwindow.wm_title("APID Select")
     Label(apidwindow, text="Desired APIDs").pack() 
     apidframe=Frame(apidwindow)
-    apidframe.pack(side=LEFT, fill=Y)
+    apidframe.pack(side=BOTTOM, fill=BOTH, expand=YES)
     scrollbar = Scrollbar(apidframe) 
     scrollbar.pack(side=RIGHT, fill=Y)
     Lb1 = Listbox(apidframe, yscrollcommand=scrollbar.set, selectmode='multiple', font=helv14) 
-    Lb1.pack()
+    Lb1.pack(fill=BOTH, expand=YES)
     scrollbar.config(command=Lb1.yview)
     
     for i,apid in enumerate(apids):
         Lb1.insert(i, apid)
     
-    Lb1.pack(side="left", fill="both", expand=True)
     apidVar = IntVar()
-    Checkbutton(apidwindow, text="All APIDs?", variable=apidVar, font=helv24).pack(side=TOP, fill=BOTH, expand=YES)
-    Button(apidwindow, text = "Execute", command = partial(run2, Lb1, apidwindow, apidVar), fg = 'red', font=helv24).pack(fill=BOTH, expand=YES) 
+    Checkbutton(apidwindow, text="All APIDs?", variable=apidVar, font=helv24).pack(side=TOP, fill=BOTH)
+    Button(apidwindow, text = "Execute", command = partial(run2, Lb1, apidwindow, apidVar), fg = 'red', font=helv24).pack(fill=BOTH) 
 
  
 
@@ -200,6 +199,7 @@ def getdirname():
 input_dir = 'data'
 root = Tk()
 root.title('De-Com Tool')
+root.state('zoomed')
 app = Frame(root)
 root.minsize(width=300, height=666)
 helv24 = tkFont.Font(family='Helvetica', size=24, weight='bold')
