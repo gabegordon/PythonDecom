@@ -212,9 +212,9 @@ instrument = IntVar()
 Label(app, text="Instrument:", font=helv18).pack(side=TOP, expand=YES)
 Radiobutton(app, text="ATMS", variable=instrument, value = 0, font=helv16).pack(side=TOP, expand=YES)
 Radiobutton(app, text="OMPS", variable=instrument, value = 1, font=helv16).pack(side=TOP, expand=YES)
-Radiobutton(app, text="VIIRS", variable=instrument, value = 2, font=helv16).pack(side=TOP, expand=YES)
+Radiobutton(app, text="VIIRS", variable=instrument, value = 2, font=helv16, state=DISABLED).pack(side=TOP, expand=YES)
 Radiobutton(app, text="CERES", variable=instrument, value = 3, font=helv16).pack(side=TOP, expand=YES)
-Radiobutton(app, text="CRIS", variable=instrument, value = 4, font=helv16).pack(side=TOP, expand=YES)
+Radiobutton(app, text="CRIS", variable=instrument, value = 4, font=helv16, state=DISABLED).pack(side=TOP, expand=YES)
 Radiobutton(app, text="SC", variable=instrument, value = 5, font=helv16).pack(side=TOP, expand=YES)
 
 
