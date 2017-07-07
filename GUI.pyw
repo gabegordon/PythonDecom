@@ -10,12 +10,15 @@ from os.path import basename
 from glob import glob
 import re
 import ttk
+from shutil import move
 
-import timeit # testing
+
+#import timeit # testing
 
 ######################
 #   h5 decode        #
 ######################
+
 # Defines a function to sort strings in natural order. This allows the keys to be read in human/natural order.
 def sortkey_natural(text):
 	return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', text)]	
@@ -23,6 +26,11 @@ def sortkey_natural(text):
 
 #h5 developed previously	
 def oldScript(ins_string):
+    '''
+        unpacks the h5 files and places them in a relevant .pkt file in the ouput directory. Skips
+        pkt files that exist in the binaryFiles directory to save time. Only unpacks h5 parts that correspond to the
+        data type specified by the user, i.e. SPACECRAFT, ATMS, OMPS.... 
+    '''
     global root, outfile
     outfile = []
     files_list = []
@@ -59,37 +67,36 @@ def oldScript(ins_string):
     mpb["maximum"] = fullSize
 
     # loop through all files
-    for file in files_list_sorted:
+    for fl in files_list_sorted:
         mpb["value"] += 1
         root.update()
-        f = h5py.File(file, 'r')
+        f = h5py.File(fl, 'r')
 
         RawAPs = f["All_Data"].keys()
         for RawAP in RawAPs:
             outputfilename = RawAP + "_" + os.path.splitext(basename(f.filename))[0].split('d')[0] + firstfiledate + "_" + lastfiledate
-            
-            outputfile[RawAP] = "output/"+basename(outputfilename)+".pkt"
-            if RawAP not in ofile and RawAP[0:length]==ins_string: # only unpack h5 files based on user selection to save time
-                ofile[RawAP] = open(outputfile[RawAP], 'wb')
-                outfile.append(outputfile[RawAP])
-                
-            datasets = f["All_Data/"+RawAP].keys()
-            dsets = sorted(datasets, key=sortkey_natural)
-            for dataset in dsets:
-                if RawAP[0:length]==ins_string: # redundant checking of filenames
-                    RawAP_node = f['/All_Data/'+RawAP+'/'+dataset]
-                    RawAP_0=RawAP_node.value
-                    # determine location of application packets
-                    apStorageOffset=RawAP_0[48:52] # location from RDR Static Header table in CDFCB Vol 2
-                    apStorageOffset = int(apStorageOffset[3]) + (int(apStorageOffset[2])*(2**8)) + (int(apStorageOffset[1])*(2**16)) + (int(apStorageOffset[0])*(2**24))
-                    inputFileValues=RawAP_0[apStorageOffset:len(RawAP_0)]
-                    ofile[RawAP].write(inputFileValues)
-    # close the input file(s)
-    f.close()
 
-    for RawAP in RawAPs:
-        if RawAP[0:length]==ins_string:
-            ofile[RawAP].close()
+            if os.path.isfile("binaryFiles/" + basename(outputfilename)+".pkt"): # check to see if we already have it. If so, skip the h5 unpacking for it 
+                move("binaryFiles/" + basename(outputfilename)+".pkt", "output/" + basename(outputfilename)+".pkt") # simply put it in the output dir for Decom
+            else:               
+                outputfile[RawAP] = "output/"+basename(outputfilename)+".pkt"
+                if RawAP not in ofile and RawAP[0:length]==ins_string: # only unpack h5 files based on user selection to save time
+                    ofile[RawAP] = open(outputfile[RawAP], 'wb')
+                    outfile.append(outputfile[RawAP])  
+                    datasets = f["All_Data/"+RawAP].keys()
+                    dsets = sorted(datasets, key=sortkey_natural)
+                    for dataset in dsets:
+                        RawAP_node = f['/All_Data/'+RawAP+'/'+dataset]
+                        RawAP_0=RawAP_node.value
+                        # determine location of application packets
+                        apStorageOffset=RawAP_0[48:52] # location from RDR Static Header table in CDFCB Vol 2
+                        apStorageOffset = int(apStorageOffset[3]) + (int(apStorageOffset[2])*(2**8)) + (int(apStorageOffset[1])*(2**16)) + (int(apStorageOffset[0])*(2**24))
+                        inputFileValues=RawAP_0[apStorageOffset:len(RawAP_0)]
+                        ofile[RawAP].write(inputFileValues)
+                    ofile[RawAP].close()
+        f.close()
+
+
 ######################END h5 DECODE###################################
 
 #Switch statement for instrument selection
@@ -106,23 +113,17 @@ def switch(argument):
 
 #Get relevant APIDs based on user selected instrument
 def relevantAPIDs(ins_string):
-    global offset
     if ins_string == "SPACECRAFT":
         return range(0,139)
     elif ins_string == "ATMS":
-        offset=450
         return range(450,543)
     elif ins_string == "OMPS":
-        offset=544
         return range(544,649)
     elif ins_string == "VIIRS":
-        offset=650
         return range(650,899)
     elif ins_string == "CERES":
-        offset=140
         return range(140,199)
     elif ins_string == "CRIS":
-        offset=1200
         return range(1200,1449)
     else:
         print("Error")
@@ -135,21 +136,21 @@ def launchCXX(Lb1, allAPIDs, packetSelect):
     all_packets = Lb1.get(0,END)
     root.destroy()
     sel_packets = []
-    for i in sel_packetsI:
-        sel_packets.append(all_packets[i])                          
-    procs = []
-    if not os.path.isfile("Decom.exe"):
-        executable = 'C:/JPSS/CXXDecom/bin/x64/Decom.exe'
+    if sel_packetsI==[]:
+        sel_packets = all_packets
     else:
-        executable = 'Decom.exe'
-    for file in sel_packets:
-        instrument = file.split('-')[0]
-        p = Popen([executable, instrument, "output/"+file, 'databases/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
+        for i in sel_packetsI:
+            sel_packets.append(all_packets[i])                          
+    procs = []
+    for fl in sel_packets:
+        instrument = fl.split('-')[0]
+        p = Popen(['Decom.exe', instrument, "output/"+fl, 'databases/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
         procs.append(p)
     for p in procs:
         p.wait() # wait until all of the Decom.exe instances exit to exit this script
     
     sys.exit()
+
 
 #Prepare to launch C++ to do the de-com     
 def callCXX (sel_apids, allAPIDs):  
@@ -157,11 +158,18 @@ def callCXX (sel_apids, allAPIDs):
     with open("databases/CXXParams.csv",'wb') as resultFile: #Write selected APIDs to file
         wr = csv.writer(resultFile, dialect='excel')
         wr.writerow(sel_apids)
-        
+
     helv20 = tkFont.Font(family='Helvetica', size=20, weight='bold')
     helv9 = tkFont.Font(family='Helvetica', size=9)
 
     packetSelect = Toplevel(root)
+
+    def exitProtocol(): # created this because system would not exit on exiting the packetSelect window
+        packetSelect.destroy()
+        exit
+        sys.exit()
+    
+    packetSelect.protocol('WM_DELETE_WINDOW', exitProtocol)
     packetSelect.minsize(width=666, height=666)
     packetSelect.wm_title("Packet Select")
     Label(packetSelect, text="Packet Select").pack() 
@@ -170,14 +178,16 @@ def callCXX (sel_apids, allAPIDs):
         Lb1.insert(i,packet.split('/')[1])
     Lb1.pack(side="left", fill="both", expand=True)
     Button(packetSelect, text = "Execute", command = partial(launchCXX, Lb1, allAPIDs, packetSelect), fg = 'red', font=helv20).pack(fill=BOTH, expand=YES) 
-
+    
 #Run h5 script
-#Create menu for selecting APIDs
+#Create menu for selecting APIds
 def run (root, instrument):
     if not os.path.exists("databases"): #Make output folders
         os.makedirs("databases")
     if not os.path.exists("output"):
         os.makedirs("output")
+    if not os.path.exists("binaryFiles"):
+        os.makedirs("output")        
     ins_string = switch(instrument.get())
     if ins_string == "CERES":
         pdsDecode(ins_string)
@@ -207,30 +217,27 @@ def run (root, instrument):
     apidVar = IntVar()
     Checkbutton(apidwindow, text="All APIDs?", variable=apidVar, font=helv24).pack(side=TOP, fill=BOTH, expand=YES)
     manualAPIDs = Entry(apidwindow)
-    Label(apidwindow, text="Enter APIDs separated by commas").pack() 
+    Label(apidwindow, text="Don't see what you want?\n Enter desired APIDs separated by commas").pack() 
     manualAPIDs.pack(side=TOP, fill=BOTH, expand=NO)
     Button(apidwindow, text = "Execute", command = partial(run2, Lb1, apidwindow, apidVar, manualAPIDs), fg = 'red', font=helv24).pack(fill=BOTH, expand=YES) 
-
  
 
 #Get user selected APIDs and get ready to call C++   
-def run2 (Lb1, apidwindow, apidVar, manualAPIDs):
-    global offset
-    apidwindow.withdraw()
-    inputAPIDs = manualAPIDs.get()
-    print(offset)
-    if inputAPIDs:
-        sel_apids = [int(x) for x in inputAPIDs.split(',')]
+def run2(Lb1, apidwindow, apidVar, manualAPIDs):
+    manAPs = manualAPIDs.get()
+    if manAPs != '':
+        manAPs = tuple(int(x.strip()) for x in manualAPIDs.get().split(',')) # coerce into int array
     else:
-        tmp = Lb1.curselection()
-        sel_apids = [x+offset for x in tmp]
+        manAPs = tuple()
+    apidwindow.withdraw()
+    sel_apids = Lb1.curselection() + manAPs
     allAPIDs = str(apidVar.get())
     callCXX(sel_apids, allAPIDs)
-
+    
 #Prompt user for h5 folder location
 def getdirname():
     global input_dir
-    input_dir = str(fd.askdirectory(initialdir='C:/JPSS/data'))
+    input_dir = str(fd.askdirectory(initialdir='data'))
 
 
 #########################
@@ -238,7 +245,6 @@ def getdirname():
 #Handles GUI Creation
 #########################
 input_dir = 'data'
-offset = 0
 root = Tk()
 root.title('De-Com Tool')
 app = Frame(root)
@@ -248,20 +254,17 @@ helv18 = tkFont.Font(family='Helvetica', size=18, weight='bold')
 helv16 = tkFont.Font(family='Helvetica', size=16, weight='bold')
 
 Button(app, text = 'Select h5 Folder', command = getdirname, font=helv24).pack(side=TOP, expand=YES, fill=BOTH)
-
 instrument = IntVar()
 Label(app, text="Instrument:", font=helv18).pack(side=TOP, expand=YES)
 Radiobutton(app, text="ATMS", variable=instrument, value = 0, font=helv16, anchor='w').pack(fill='both', expand=YES)
 Radiobutton(app, text="OMPS", variable=instrument, value = 1, font=helv16, anchor='w').pack(fill='both',  expand=YES)
-Radiobutton(app, text="VIIRS", variable=instrument, value = 2, font=helv16, anchor='w', state=DISABLED).pack(fill='both',  expand=YES)
+Radiobutton(app, text="VIIRS", variable=instrument, value = 2, font=helv16, anchor='w').pack(fill='both',  expand=YES)
 Radiobutton(app, text="CERES", variable=instrument, value = 3, font=helv16, anchor='w').pack(fill='both',  expand=YES)
-Radiobutton(app, text="CRIS", variable=instrument, value = 4, font=helv16, anchor='w', state=DISABLED).pack(fill='both',  expand=YES)
+Radiobutton(app, text="CRIS", variable=instrument, value = 4, font=helv16, anchor='w').pack(fill='both',  expand=YES)
 Radiobutton(app, text="SPACECRAFT", variable=instrument, value = 5, font=helv16, anchor='w').pack(fill='both',  expand=YES)
 
 
 Button(app, text = "Execute", command = partial(run, root, instrument), fg = 'red', font=helv24).pack(side=TOP, expand=YES, fill=BOTH)
 app.pack(fill=BOTH, expand=YES)
 root.mainloop()
-
-
 
