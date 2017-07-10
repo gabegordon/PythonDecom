@@ -99,4 +99,3 @@ ENV/
 
 # mypy
 .mypy_cache/
- output/* databases/* binaryFiles/* data/*
