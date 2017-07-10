@@ -11,6 +11,12 @@ from glob import glob
 import re
 import ttk
 
+if os.name=='posix': # UNIX machine
+    import shlex
+else:
+    from subprocess import CREATE_NEW_CONSOLE
+
+
 #import timeit # testing
 
 ######################
@@ -131,6 +137,9 @@ def relevantAPIDs(ins_string):
 #Call C++ with selected files
 def launchCXX(Lb1, allAPIDs, packetSelect):
     global root
+
+    cwd = os.getcwd()
+
     packetSelect.withdraw()
     sel_packetsI = Lb1.curselection()
     all_packets = Lb1.get(0,END)
@@ -146,12 +155,24 @@ def launchCXX(Lb1, allAPIDs, packetSelect):
     procs = []
 
     if not os.path.isfile(os.path.join(os.getcwd(),"Decom")):
-        executable = os.path.join(os.getcwd(),'CXXDecom/bin/x64/Decom')
+        executable = os.path.join(cwd,'CXXDecom/bin/x64/Decom')
     else:
         executable = 'Decom'
+
+    if os.name=='posix':
+        isUNIX = True
+    else:
+        isUNIX = False
+
     for file in sel_packets:
         instrument = file.split('-')[0]
-        p = Popen(executable + ' ' + instrument + " output/"+file + ' databases/CXXParams.csv ' +  allAPIDs, shell=True)
+        if isUNIX:
+            p = Popen(shlex.split("xterm -e " + executable + ' ' + instrument + ' ' \
+                +  os.path.join(cwd,"output/"+file) + ' ' + \
+                os.path.join(cwd ,'databases/CXXParams.csv') + ' ' +  allAPIDs))
+        else:
+            p = Popen([executable,instrument,os.path.join(cwd,"output/"+file) \
+                , os.path.join(cwd ,'databases/CXXParams.csv'), allAPIDs], creationflags=CREATE_NEW_CONSOLE)
         procs.append(p)
 
     for p in procs:
@@ -162,6 +183,10 @@ def launchCXX(Lb1, allAPIDs, packetSelect):
 #Prepare to launch C++ to do the de-com     
 def callCXX (sel_apids, allAPIDs):  
     global outfile, root
+
+    if allAPIDs:
+        sel_apids = [-1] # when run on UNIX nachines Decom gets mad if CXXParams is empty
+
     with open(os.path.join(os.getcwd(),"databases/CXXParams.csv"),'wb') as resultFile: #Write selected APIDs to file
         wr = csv.writer(resultFile, dialect='excel')
         wr.writerow(sel_apids)
