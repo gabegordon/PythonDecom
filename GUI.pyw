@@ -3,7 +3,7 @@ import tkFont
 from functools import partial
 import tkFileDialog as fd
 import csv
-from subprocess import Popen, CREATE_NEW_CONSOLE
+from subprocess import Popen
 import os
 import h5py
 from os.path import basename
@@ -11,7 +11,7 @@ from glob import glob
 import re
 import ttk
 
-import timeit # testing
+#import timeit # testing
 
 ######################
 #   h5 decode        #
@@ -90,6 +90,7 @@ def oldScript(ins_string):
     for RawAP in RawAPs:
         if RawAP[0:length]==ins_string:
             ofile[RawAP].close()
+
 ######################END h5 DECODE###################################
 
 #Switch statement for instrument selection
@@ -134,18 +135,25 @@ def launchCXX(Lb1, allAPIDs, packetSelect):
     sel_packetsI = Lb1.curselection()
     all_packets = Lb1.get(0,END)
     root.destroy()
+
     sel_packets = []
-    for i in sel_packetsI:
-        sel_packets.append(all_packets[i])                          
-    procs = []
-    if not os.path.isfile("Decom.exe"):
-        executable = 'C:/JPSS/CXXDecom/bin/x64/Decom.exe'
+    if len(sel_packetsI)==0:
+        sel_packets = all_packets
     else:
-        executable = 'Decom.exe'
+        for i in sel_packetsI:
+            sel_packets.append(all_packets[i])  
+
+    procs = []
+
+    if not os.path.isfile(os.path.join(os.getcwd(),"Decom")):
+        executable = os.path.join(os.getcwd(),'CXXDecom/bin/x64/Decom')
+    else:
+        executable = 'Decom'
     for file in sel_packets:
         instrument = file.split('-')[0]
-        p = Popen([executable, instrument, "output/"+file, 'databases/CXXParams.csv', allAPIDs], creationflags=CREATE_NEW_CONSOLE)
+        p = Popen(executable + ' ' + instrument + " output/"+file + ' databases/CXXParams.csv ' +  allAPIDs, shell=True)
         procs.append(p)
+
     for p in procs:
         p.wait() # wait until all of the Decom.exe instances exit to exit this script
     
@@ -154,14 +162,20 @@ def launchCXX(Lb1, allAPIDs, packetSelect):
 #Prepare to launch C++ to do the de-com     
 def callCXX (sel_apids, allAPIDs):  
     global outfile, root
-    with open("databases/CXXParams.csv",'wb') as resultFile: #Write selected APIDs to file
+    with open(os.path.join(os.getcwd(),"databases/CXXParams.csv"),'wb') as resultFile: #Write selected APIDs to file
         wr = csv.writer(resultFile, dialect='excel')
         wr.writerow(sel_apids)
         
     helv20 = tkFont.Font(family='Helvetica', size=20, weight='bold')
     helv9 = tkFont.Font(family='Helvetica', size=9)
 
+    def exitProtocol(): # help GUI code exit if UI is x'ed out
+        packetSelect.destroy()
+        exit
+        sys.exit()
+
     packetSelect = Toplevel(root)
+    packetSelect.protocol('WM_DELETE_WINDOW', exitProtocol)
     packetSelect.minsize(width=666, height=666)
     packetSelect.wm_title("Packet Select")
     Label(packetSelect, text="Packet Select").pack() 
@@ -174,10 +188,12 @@ def callCXX (sel_apids, allAPIDs):
 #Run h5 script
 #Create menu for selecting APIDs
 def run (root, instrument):
-    if not os.path.exists("databases"): #Make output folders
-        os.makedirs("databases")
-    if not os.path.exists("output"):
-        os.makedirs("output")
+    if not os.path.exists(os.path.join(os.getcwd(), "databases")): #Make output folders
+        os.makedirs(os.path.join(os.getcwd(), "databases"))
+    if not os.path.exists(os.path.join(os.getcwd(), "output")):
+        os.makedirs(os.path.join(os.getcwd(), "output"))
+    if not os.path.exists(os.path.join(os.getcwd(), "binaryFiles")):
+        os.makedirs(os.path.join(os.getcwd(), "binaryFiles"))    
     ins_string = switch(instrument.get())
     if ins_string == "CERES":
         pdsDecode(ins_string)
@@ -207,7 +223,7 @@ def run (root, instrument):
     apidVar = IntVar()
     Checkbutton(apidwindow, text="All APIDs?", variable=apidVar, font=helv24).pack(side=TOP, fill=BOTH, expand=YES)
     manualAPIDs = Entry(apidwindow)
-    Label(apidwindow, text="Enter APIDs separated by commas").pack() 
+    Label(apidwindow, text="Don't see what you want?\nEnter APIDs separated by commas").pack() 
     manualAPIDs.pack(side=TOP, fill=BOTH, expand=NO)
     Button(apidwindow, text = "Execute", command = partial(run2, Lb1, apidwindow, apidVar, manualAPIDs), fg = 'red', font=helv24).pack(fill=BOTH, expand=YES) 
 
@@ -218,7 +234,6 @@ def run2 (Lb1, apidwindow, apidVar, manualAPIDs):
     global offset
     apidwindow.withdraw()
     inputAPIDs = manualAPIDs.get()
-    print(offset)
     if inputAPIDs:
         sel_apids = [int(x) for x in inputAPIDs.split(',')]
     else:
@@ -230,7 +245,7 @@ def run2 (Lb1, apidwindow, apidVar, manualAPIDs):
 #Prompt user for h5 folder location
 def getdirname():
     global input_dir
-    input_dir = str(fd.askdirectory(initialdir='C:/JPSS/data'))
+    input_dir = str(fd.askdirectory(initialdir=os.path.join(os.getcwd(), 'data')))
 
 
 #########################
