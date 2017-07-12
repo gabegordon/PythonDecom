@@ -91,6 +91,7 @@ def oldScript(ins_string):
                     apStorageOffset = int(apStorageOffset[3]) + (int(apStorageOffset[2])*(2**8)) + (int(apStorageOffset[1])*(2**16)) + (int(apStorageOffset[0])*(2**24))
                     inputFileValues=RawAP_0[apStorageOffset:len(RawAP_0)]
                     ofile[RawAP].write(inputFileValues)
+    
     # close the input file(s)
     f.close()
 
@@ -109,9 +110,16 @@ def pdsDecode(ins_string):
         for filename in filenames:
             if filename.endswith('.PDS'):
                 files_list += glob(os.path.join(dirname, filename))
-                
+       
+    fullSize = len(files_list)
+    mpb = ttk.Progressbar(root,orient ="horizontal",length = 200, mode ="determinate")
+    mpb.pack(side=TOP, expand=YES)
+    mpb["maximum"] = fullSize
+    
     with open(outfile[0], 'wb') as outfilew:
         for filename in files_list:
+            mpb["value"] += 1
+            root.update()
             with open(filename, 'rb') as readfile:
                 tmp = readfile.read(1).encode("hex")
                 if int(tmp) == 0:
