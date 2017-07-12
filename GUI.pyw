@@ -10,6 +10,7 @@ from os.path import basename
 from glob import glob
 import re
 import ttk
+import shutil
 
 if os.name=='posix': # UNIX machine
     import shlex
@@ -98,6 +99,27 @@ def oldScript(ins_string):
             ofile[RawAP].close()
 
 ######################END h5 DECODE###################################
+def pdsDecode(ins_string):
+    global root, outfile
+    outfile = ["output/" + ins_string + "-" + "TEST.pkt"]
+    files_list = []
+
+    for dirname, dirnames, filenames in os.walk(input_dir):
+        # print path to all filenames.
+        for filename in filenames:
+            if filename.endswith('.PDS'):
+                files_list += glob(os.path.join(dirname, filename))
+                
+    with open(outfile[0], 'wb') as outfilew:
+        for filename in files_list:
+            with open(filename, 'rb') as readfile:
+                tmp = readfile.read(1).encode("hex")
+                if int(tmp) == 0:
+                    continue
+                else:
+                    readfile.seek(0)
+                shutil.copyfileobj(readfile, outfilew)
+
 
 #Switch statement for instrument selection
 def switch(argument):
