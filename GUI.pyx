@@ -25,7 +25,7 @@ else:
 ######################
 # Defines a function to sort strings in natural order. This allows the keys to be read in human/natural order.
 def sortkey_natural(text):
-	return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', text)]	
+    return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', text)]	
 
 
 #h5 developed previously	
@@ -73,17 +73,16 @@ def oldScript(ins_string):
 
         RawAPs = f["All_Data"].keys()
         for RawAP in RawAPs:
-            outputfilename = RawAP + "_" + os.path.splitext(basename(f.filename))[0].split('d')[0] + firstfiledate + "_" + lastfiledate
-            
-            outputfile[RawAP] = "output/"+basename(outputfilename)+".pkt"
-            if RawAP not in ofile and RawAP[0:length]==ins_string: # only unpack h5 files based on user selection to save time
-                ofile[RawAP] = open(outputfile[RawAP], 'wb')
-                outfile.append(outputfile[RawAP])
-                
-            datasets = f["All_Data/"+RawAP].keys()
-            dsets = sorted(datasets, key=sortkey_natural)
-            for dataset in dsets:
-                if RawAP[0:length]==ins_string: # redundant checking of filenames
+            if RawAP[0:length]==ins_string: # redundant checking of filenames
+                if RawAP not in ofile and RawAP[0:length]==ins_string: # only unpack h5 files based on user selection to save time
+                    outputfilename = RawAP + "_" + os.path.splitext(basename(f.filename))[0].split('d')[0] + firstfiledate + "_" + lastfiledate
+                    outputfile[RawAP] = "output/"+basename(outputfilename)+".pkt"    
+                    ofile[RawAP] = open(outputfile[RawAP], 'wb')
+                    outfile.append(outputfile[RawAP])
+                    
+                datasets = f["All_Data/"+RawAP].keys()
+                dsets = sorted(datasets, key=sortkey_natural)
+                for dataset in dsets:
                     RawAP_node = f['/All_Data/'+RawAP+'/'+dataset]
                     RawAP_0=RawAP_node.value
                     # determine location of application packets
@@ -92,8 +91,8 @@ def oldScript(ins_string):
                     inputFileValues=RawAP_0[apStorageOffset:len(RawAP_0)]
                     ofile[RawAP].write(inputFileValues)
     
-    # close the input file(s)
-    f.close()
+        # close the input file(s)
+        f.close()
 
     for RawAP in RawAPs:
         if RawAP[0:length]==ins_string:
@@ -259,7 +258,14 @@ def run (root, instrument):
     
     helv24 = tkFont.Font(family='Helvetica', size=24, weight='bold')
     helv14 = tkFont.Font(family='Helvetica', size=14)
-    apidwindow = Toplevel(root)  
+
+    def exitProtocol(): # help GUI code exit if UI is x'ed out
+        apidwindow.destroy()
+        exit
+        sys.exit()
+
+    apidwindow = Toplevel(root) 
+    apidwindow.protocol('WM_DELETE_WINDOW', exitProtocol) 
     apidwindow.minsize(width=300, height=666)
     apidwindow.wm_title("APID Select")
     Label(apidwindow, text="Desired APIDs").pack() 
@@ -307,31 +313,33 @@ def getdirname():
 #Main Section
 #Handles GUI Creation
 #########################
-input_dir = 'data'
-offset = 0
-root = Tk()
-root.title('De-Com Tool')
-app = Frame(root)
-root.minsize(width=300, height=666)
-helv24 = tkFont.Font(family='Helvetica', size=24, weight='bold')
-helv18 = tkFont.Font(family='Helvetica', size=18, weight='bold')
-helv16 = tkFont.Font(family='Helvetica', size=16, weight='bold')
 
-Button(app, text = 'Select h5 Folder', command = getdirname, font=helv24).pack(side=TOP, expand=YES, fill=BOTH)
+# calls main function if the script is run standaloone
+if __name__ == '__main__':
+    input_dir = 'data'
+    offset = 0
+    root = Tk()
+    root.title('De-Com Tool')
+    app = Frame(root)
+    root.minsize(width=300, height=666)
+    helv24 = tkFont.Font(family='Helvetica', size=24, weight='bold')
+    helv18 = tkFont.Font(family='Helvetica', size=18, weight='bold')
+    helv16 = tkFont.Font(family='Helvetica', size=16, weight='bold')
 
-instrument = IntVar()
-Label(app, text="Instrument:", font=helv18).pack(side=TOP, expand=YES)
-Radiobutton(app, text="ATMS", variable=instrument, value = 0, font=helv16, anchor='w').pack(fill='both', expand=YES)
-Radiobutton(app, text="OMPS", variable=instrument, value = 1, font=helv16, anchor='w').pack(fill='both',  expand=YES)
-Radiobutton(app, text="VIIRS", variable=instrument, value = 2, font=helv16, anchor='w', state=DISABLED).pack(fill='both',  expand=YES)
-Radiobutton(app, text="CERES", variable=instrument, value = 3, font=helv16, anchor='w').pack(fill='both',  expand=YES)
-Radiobutton(app, text="CRIS", variable=instrument, value = 4, font=helv16, anchor='w', state=DISABLED).pack(fill='both',  expand=YES)
-Radiobutton(app, text="SPACECRAFT", variable=instrument, value = 5, font=helv16, anchor='w').pack(fill='both',  expand=YES)
+    Button(app, text = 'Select h5 Folder', command = getdirname, font=helv24).pack(side=TOP, expand=YES, fill=BOTH)
+
+    instrument = IntVar()
+    Label(app, text="Instrument:", font=helv18).pack(side=TOP, expand=YES)
+    Radiobutton(app, text="ATMS", variable=instrument, value = 0, font=helv16, anchor='w').pack(fill='both', expand=YES)
+    Radiobutton(app, text="OMPS", variable=instrument, value = 1, font=helv16, anchor='w').pack(fill='both',  expand=YES)
+    Radiobutton(app, text="VIIRS", variable=instrument, value = 2, font=helv16, anchor='w', state=DISABLED).pack(fill='both',  expand=YES)
+    Radiobutton(app, text="CERES", variable=instrument, value = 3, font=helv16, anchor='w').pack(fill='both',  expand=YES)
+    Radiobutton(app, text="CRIS", variable=instrument, value = 4, font=helv16, anchor='w', state=DISABLED).pack(fill='both',  expand=YES)
+    Radiobutton(app, text="SPACECRAFT", variable=instrument, value = 5, font=helv16, anchor='w').pack(fill='both',  expand=YES)
 
 
-Button(app, text = "Execute", command = partial(run, root, instrument), fg = 'red', font=helv24).pack(side=TOP, expand=YES, fill=BOTH)
-app.pack(fill=BOTH, expand=YES)
-root.mainloop()
-
+    Button(app, text = "Execute", command = partial(run, root, instrument), fg = 'red', font=helv24).pack(side=TOP, expand=YES, fill=BOTH)
+    app.pack(fill=BOTH, expand=YES)
+    root.mainloop()
 
 
