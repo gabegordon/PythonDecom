@@ -1116,7 +1116,7 @@ static char __pyx_k_CXXDecom_bin_x64_Decom[] = "CXXDecom/bin/x64/Decom";
 static char __pyx_k_databases_CXXParams_csv[] = "databases/CXXParams.csv";
 static char __pyx_k_run_locals_exitProtocol[] = "run.<locals>.exitProtocol";
 static char __pyx_k_callCXX_locals_exitProtocol[] = "callCXX.<locals>.exitProtocol";
-static char __pyx_k_home_nate_JPSS_JPSS_tools_Decom[] = "/home/nate/JPSS/JPSS_tools/Decom_tools/GUI.pyx";
+static char __pyx_k_home_nate_JPSS_PythonDecom_GUI[] = "/home/nate/JPSS/PythonDecom/GUI.pyx";
 static char __pyx_k_Don_t_see_what_you_want_Enter_AP[] = "Don't see what you want?\nEnter APIDs separated by commas";
 static PyObject *__pyx_kp_s_APID_Select;
 static PyObject *__pyx_n_s_ATMS;
@@ -1262,7 +1262,7 @@ static PyObject *__pyx_n_s_helv20;
 static PyObject *__pyx_n_s_helv24;
 static PyObject *__pyx_n_s_helv9;
 static PyObject *__pyx_n_s_hex;
-static PyObject *__pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom;
+static PyObject *__pyx_kp_s_home_nate_JPSS_PythonDecom_GUI;
 static PyObject *__pyx_n_s_horizontal;
 static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_import;
@@ -10196,7 +10196,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_helv24, __pyx_k_helv24, sizeof(__pyx_k_helv24), 0, 0, 1, 1},
   {&__pyx_n_s_helv9, __pyx_k_helv9, sizeof(__pyx_k_helv9), 0, 0, 1, 1},
   {&__pyx_n_s_hex, __pyx_k_hex, sizeof(__pyx_k_hex), 0, 0, 1, 1},
-  {&__pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_k_home_nate_JPSS_JPSS_tools_Decom, sizeof(__pyx_k_home_nate_JPSS_JPSS_tools_Decom), 0, 0, 1, 0},
+  {&__pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_k_home_nate_JPSS_PythonDecom_GUI, sizeof(__pyx_k_home_nate_JPSS_PythonDecom_GUI), 0, 0, 1, 0},
   {&__pyx_n_s_horizontal, __pyx_k_horizontal, sizeof(__pyx_k_horizontal), 0, 0, 1, 1},
   {&__pyx_n_s_i, __pyx_k_i, sizeof(__pyx_k_i), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
@@ -10543,7 +10543,7 @@ static int __Pyx_InitCachedConstants(void) {
  *         packetSelect.destroy()
  *         exit
  */
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_exitProtocol, 226, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_exitProtocol, 226, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":234
  *     packetSelect.protocol('WM_DELETE_WINDOW', exitProtocol)
@@ -10574,7 +10574,7 @@ static int __Pyx_InitCachedConstants(void) {
  *         apidwindow.destroy()
  *         exit
  */
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_exitProtocol, 262, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 262; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_exitProtocol, 262, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 262; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":270
  *     apidwindow.protocol('WM_DELETE_WINDOW', exitProtocol)
@@ -10608,7 +10608,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__33 = PyTuple_Pack(2, __pyx_n_s_text, __pyx_n_s_s); if (unlikely(!__pyx_tuple__33)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__33);
   __Pyx_GIVEREF(__pyx_tuple__33);
-  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_sortkey_natural, 27, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_sortkey_natural, 27, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":32
  * 
@@ -10620,7 +10620,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__35 = PyTuple_Pack(28, __pyx_n_s_ins_string, __pyx_n_s_files_list, __pyx_n_s_dirname, __pyx_n_s_dirnames, __pyx_n_s_filenames, __pyx_n_s_filename, __pyx_n_s_files_list_sorted, __pyx_n_s_first_file, __pyx_n_s_last_file, __pyx_n_s_firstfiledate, __pyx_n_s_lastfiledate, __pyx_n_s_outputfile, __pyx_n_s_ofile, __pyx_n_s_length, __pyx_n_s_fullSize, __pyx_n_s_mpb, __pyx_n_s_file, __pyx_n_s_f, __pyx_n_s_RawAPs, __pyx_n_s_RawAP, __pyx_n_s_outputfilename, __pyx_n_s_datasets, __pyx_n_s_dsets, __pyx_n_s_dataset, __pyx_n_s_RawAP_node, __pyx_n_s_RawAP_0, __pyx_n_s_apStorageOffset, __pyx_n_s_inputFileValues); if (unlikely(!__pyx_tuple__35)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__35);
   __Pyx_GIVEREF(__pyx_tuple__35);
-  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(1, 0, 28, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__35, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_oldScript, 32, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(1, 0, 28, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__35, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_oldScript, 32, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":102
  * 
@@ -10632,7 +10632,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__37 = PyTuple_Pack(11, __pyx_n_s_ins_string, __pyx_n_s_files_list, __pyx_n_s_dirname, __pyx_n_s_dirnames, __pyx_n_s_filenames, __pyx_n_s_filename, __pyx_n_s_fullSize, __pyx_n_s_mpb, __pyx_n_s_outfilew, __pyx_n_s_readfile, __pyx_n_s_tmp); if (unlikely(!__pyx_tuple__37)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__37);
   __Pyx_GIVEREF(__pyx_tuple__37);
-  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(1, 0, 11, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_pdsDecode, 102, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(1, 0, 11, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_pdsDecode, 102, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":132
  * 
@@ -10644,7 +10644,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__39 = PyTuple_Pack(2, __pyx_n_s_argument, __pyx_n_s_switcher); if (unlikely(!__pyx_tuple__39)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__39);
   __Pyx_GIVEREF(__pyx_tuple__39);
-  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_switch, 132, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_switch, 132, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":144
  * 
@@ -10656,7 +10656,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__41 = PyTuple_Pack(1, __pyx_n_s_ins_string); if (unlikely(!__pyx_tuple__41)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__41);
   __Pyx_GIVEREF(__pyx_tuple__41);
-  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_relevantAPIDs, 144, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_relevantAPIDs, 144, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":167
  * 
@@ -10668,7 +10668,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__43 = PyTuple_Pack(14, __pyx_n_s_Lb1, __pyx_n_s_allAPIDs, __pyx_n_s_packetSelect, __pyx_n_s_cwd, __pyx_n_s_sel_packetsI, __pyx_n_s_all_packets, __pyx_n_s_sel_packets, __pyx_n_s_i, __pyx_n_s_procs, __pyx_n_s_executable, __pyx_n_s_isUNIX, __pyx_n_s_file, __pyx_n_s_instrument, __pyx_n_s_p); if (unlikely(!__pyx_tuple__43)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__43);
   __Pyx_GIVEREF(__pyx_tuple__43);
-  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(3, 0, 14, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_launchCXX, 167, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(3, 0, 14, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_launchCXX, 167, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":213
  * 
@@ -10680,7 +10680,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__45 = PyTuple_Pack(12, __pyx_n_s_sel_apids, __pyx_n_s_allAPIDs, __pyx_n_s_resultFile, __pyx_n_s_wr, __pyx_n_s_helv20, __pyx_n_s_helv9, __pyx_n_s_exitProtocol, __pyx_n_s_exitProtocol, __pyx_n_s_packetSelect, __pyx_n_s_Lb1, __pyx_n_s_i, __pyx_n_s_packet); if (unlikely(!__pyx_tuple__45)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 213; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__45);
   __Pyx_GIVEREF(__pyx_tuple__45);
-  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(2, 0, 12, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_callCXX, 213, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 213; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(2, 0, 12, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_callCXX, 213, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 213; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":244
  * #Run h5 script
@@ -10692,7 +10692,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__47 = PyTuple_Pack(16, __pyx_n_s_root, __pyx_n_s_instrument, __pyx_n_s_ins_string, __pyx_n_s_apids, __pyx_n_s_helv24, __pyx_n_s_helv14, __pyx_n_s_exitProtocol, __pyx_n_s_exitProtocol, __pyx_n_s_apidwindow, __pyx_n_s_apidframe, __pyx_n_s_scrollbar, __pyx_n_s_Lb1, __pyx_n_s_i, __pyx_n_s_apid, __pyx_n_s_apidVar, __pyx_n_s_manualAPIDs); if (unlikely(!__pyx_tuple__47)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__47);
   __Pyx_GIVEREF(__pyx_tuple__47);
-  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(2, 0, 16, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_run, 244, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(2, 0, 16, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_run, 244, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":294
  * 
@@ -10704,7 +10704,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__49 = PyTuple_Pack(9, __pyx_n_s_Lb1, __pyx_n_s_apidwindow, __pyx_n_s_apidVar, __pyx_n_s_manualAPIDs, __pyx_n_s_inputAPIDs, __pyx_n_s_sel_apids, __pyx_n_s_tmp, __pyx_n_s_allAPIDs, __pyx_n_s_x); if (unlikely(!__pyx_tuple__49)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 294; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__49);
   __Pyx_GIVEREF(__pyx_tuple__49);
-  __pyx_codeobj__50 = (PyObject*)__Pyx_PyCode_New(4, 0, 9, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__49, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_run2, 294, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__50)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 294; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__50 = (PyObject*)__Pyx_PyCode_New(4, 0, 9, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__49, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_run2, 294, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__50)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 294; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":307
  * 
@@ -10713,7 +10713,7 @@ static int __Pyx_InitCachedConstants(void) {
  *     global input_dir
  *     input_dir = str(fd.askdirectory(initialdir=os.path.join(os.getcwd(), 'data')))
  */
-  __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_JPSS_tools_Decom, __pyx_n_s_getdirname, 307, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 307; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nate_JPSS_PythonDecom_GUI, __pyx_n_s_getdirname, 307, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 307; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "GUI.pyx":322
  *     offset = 0
